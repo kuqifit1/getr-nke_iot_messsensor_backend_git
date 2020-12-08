@@ -62,6 +62,16 @@ for (let device of devices) {
     source.addEventListener('buttonStateChanged', eventListeners.handleButtonStateChanged)
     source.addEventListener('blinkingStateChanged', eventListeners.handleBlinkingStateChanged)
 
+    source.addEventListener('buttonStateChanged2', eventListeners.handleChange2)
+    source.addEventListener('buttonStateChanged3', eventListeners.handleChange3)
+    source.addEventListener('buttonStateChanged4', eventListeners.handleChange4)
+    source.addEventListener('buttonStateChanged5', eventListeners.handleChange5)
+    source.addEventListener('buttonStateChanged6', eventListeners.handleChange6)
+    source.addEventListener('buttonStateChanged7', eventListeners.handleChange7)
+    
+    source.addEventListener('total', eventListeners.handleTotal)
+    
+
     /////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////
 }

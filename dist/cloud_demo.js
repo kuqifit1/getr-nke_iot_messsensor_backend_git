@@ -3,7 +3,7 @@ var rootUrl = window.location.origin; // get the root URL, e.g. https://example.
 var app = new Vue({
     el: "#app",
     data: {
-        bottleL: "unknown", // the state of the button on device 0
+        bottle2: "unknown", // the state of the button on device 0
         buttonState3: "unknown",
         buttonState4: "unknown",
         buttonState5: "unknown",
@@ -11,8 +11,15 @@ var app = new Vue({
         buttonState7: "unknown",  // the state of the button on device 1
         buttonPressCounter: 0,    // how many times the buttons were pressed
         buttonsSync: false,       // true if the buttons were pressed within 1 second
-        blinking_0: false,        // true if device 0 is blinking.
-        blinking_1: false,        // true if device 0 is blinking.
+        state_0: 0,
+        state_1: 0,
+        state_2: 0,
+        state_3: 0,
+        state_4: 0,
+        state_5: 0,
+
+        total: "0",        // true if device 0 is blinking.
+        blinking_1: false, 
         // add your own variables here ...
     },
     // This function is executed once when the page is loaded.
@@ -36,14 +43,78 @@ var app = new Vue({
         // react on events: update the variables to be displayed
         updateVariables(ev) {
             // Event "buttonStateChanged"
-            if (ev.eventName === "buttonStateChanged") {
-                this.buttonPressCounter = ev.eventData.counter;
+            if (ev.eventName === "buttonStateChanged2") {
                 if (ev.eventData.message === "pressed") {
-                    this.buttonsSync = ev.eventData.pressedSync;
+                    this.state_0 = 1;
+
+                }else if (ev.eventData.message === "released"){
+
+                    this.state_0 = 0;
                 }
+            }else if (ev.eventName === "buttonStateChanged3"){
+
+                if (ev.eventData.message === "pressed") {
+                    this.state_1 = 1;
+
+                }else if (ev.eventData.message === "released"){
+
+                    this.state_1 = 0;
+                }
+
+            }else if (ev.eventName === "buttonStateChanged4"){
+
+                if (ev.eventData.message === "pressed") {
+                    this.state_2 = 1;
+
+                }else if (ev.eventData.message === "released"){
+
+                    this.state_2 = 0;
+                }
+
+            }else if (ev.eventName === "buttonStateChanged5"){
+
+                if (ev.eventData.message === "pressed") {
+                    this.state_3 = 1;
+
+                }else if (ev.eventData.message === "released"){
+
+                    this.state_3 = 0;
+                }
+
+            }else if (ev.eventName === "buttonStateChanged6"){
+
+                if (ev.eventData.message === "pressed") {
+                    this.state_4 = 1;
+
+                }else if (ev.eventData.message === "released"){
+
+                    this.state_4 = 0;
+                }
+
+            }else if (ev.eventName === "buttonStateChanged7"){
+
+                if (ev.eventData.message === "pressed") {
+                    this.state_5 = 1;
+
+                }else if (ev.eventData.message === "released"){
+
+                    this.state_5 = 0;
+                }
+
             }
+
+          if (ev.eventName === "total") {
+                
+                    this.total = total;
+              
+                }  
+
+
+
+
+            
             // Event "blinkingStateChanged"
-            else if (ev.eventName === "blinkingStateChanged") {
+/*             else if (ev.eventName === "blinkingStateChanged") {
                 if (ev.eventData.message === "started blinking") {
                     if (ev.deviceNumber === 0) {
                         this.blinking_0 = true;
@@ -60,7 +131,7 @@ var app = new Vue({
                         this.blinking_1 = false;
                     }
                 }
-            }
+            } */
         },
         // call the function "blinkRed" in your backend
         blinkRed: function (nr) {
@@ -76,20 +147,20 @@ var app = new Vue({
         },
         // get the value of the variable "buttonState" on the device with number "nr" from your backend
         getButtonState: function (nr) {
-            axios.get(rootUrl + "/api/device/" + nr + "/variable/buttonState2")
+            axios.get(rootUrl + "/api/device/" + nr + "/variable/total")
                 .then(response => {
                     // Handle the response from the server
-                    var bottle2 = response.data.result;
+                    var total = response.data.result;
                     var bottleL;
                     // this.buttonState2 = buttonState2;
 
-                    if (bottle2 = 1 ){
+                    if (bottle2 == 1 ){
 
-                        this.bottleL = 0;
+                        this.bottle2 = 0;
 
-                    } else if ( bottle2 = 0){
+                    } else if ( bottle2 == 0){
 
-                        this.bottleL = 1; 
+                        this.bottle2 = 1; 
 
                      } else {
                         console.log("unknown device number: " + nr);
@@ -102,6 +173,21 @@ var app = new Vue({
 /*                     else {
                         console.log("unknown device number: " + nr);
                     } */
+                })
+                .catch(error => {
+                    alert("Could not read the button state of device number " + nr + ".\n\n" + error)
+                })
+        },
+
+        getTotal: function (nr) {
+            axios.get(rootUrl + "/api/device/" + nr + "/variable/total")
+                .then(response => {
+                    // Handle the response from the server
+                    var total = response.data.result;
+                    
+                     this.total = total
+
+                
                 })
                 .catch(error => {
                     alert("Could not read the button state of device number " + nr + ".\n\n" + error)
