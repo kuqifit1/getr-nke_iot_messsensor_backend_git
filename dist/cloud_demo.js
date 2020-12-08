@@ -3,8 +3,12 @@ var rootUrl = window.location.origin; // get the root URL, e.g. https://example.
 var app = new Vue({
     el: "#app",
     data: {
-        buttonState_0: "unknown", // the state of the button on device 0
-        buttonState_1: "unknown", // the state of the button on device 1
+        bottleL: "unknown", // the state of the button on device 0
+        buttonState3: "unknown",
+        buttonState4: "unknown",
+        buttonState5: "unknown",
+        buttonState6: "unknown",
+        buttonState7: "unknown",  // the state of the button on device 1
         buttonPressCounter: 0,    // how many times the buttons were pressed
         buttonsSync: false,       // true if the buttons were pressed within 1 second
         blinking_0: false,        // true if device 0 is blinking.
@@ -72,19 +76,32 @@ var app = new Vue({
         },
         // get the value of the variable "buttonState" on the device with number "nr" from your backend
         getButtonState: function (nr) {
-            axios.get(rootUrl + "/api/device/" + nr + "/variable/buttonState")
+            axios.get(rootUrl + "/api/device/" + nr + "/variable/buttonState2")
                 .then(response => {
                     // Handle the response from the server
-                    var buttonState = response.data.result;
-                    if (nr === 0) {
-                        this.buttonState_0 = buttonState;
-                    }
-                    else if (nr === 1) {
-                        this.buttonState_1 = buttonState;
-                    }
-                    else {
+                    var bottle2 = response.data.result;
+                    var bottleL;
+                    // this.buttonState2 = buttonState2;
+
+                    if (bottle2 = 1 ){
+
+                        this.bottleL = 0;
+
+                    } else if ( bottle2 = 0){
+
+                        this.bottleL = 1; 
+
+                     } else {
                         console.log("unknown device number: " + nr);
-                    }
+                    } 
+                   // if (nr === 0) {
+                    //}
+                    /* else if (nr === 1) {
+                        this.buttonState_1 = buttonState;
+                    } */
+/*                     else {
+                        console.log("unknown device number: " + nr);
+                    } */
                 })
                 .catch(error => {
                     alert("Could not read the button state of device number " + nr + ".\n\n" + error)
