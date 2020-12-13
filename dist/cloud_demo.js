@@ -3,14 +3,9 @@ var rootUrl = window.location.origin; // get the root URL, e.g. https://example.
 var app = new Vue({
     el: "#app",
     data: {
-        bottle2: "unknown", // the state of the button on device 0
-        buttonState3: "unknown",
-        buttonState4: "unknown",
-        buttonState5: "unknown",
-        buttonState6: "unknown",
-        buttonState7: "unknown",  // the state of the button on device 1
-        buttonPressCounter: 0,    // how many times the buttons were pressed
-        buttonsSync: false,       // true if the buttons were pressed within 1 second
+ 
+        
+        // true if the buttons were pressed within 1 second
         state_0: 0,
         state_1: 0,
         state_2: 0,
@@ -18,10 +13,16 @@ var app = new Vue({
         state_4: 0,
         state_5: 0,
 
-        total: "0",        // true if device 0 is blinking.
-        blinking_1: false, 
+        total: 0,  
+        
+        counter: 0,
+
+        meldebestand: 0,
+
         // add your own variables here ...
     },
+
+   
     // This function is executed once when the page is loaded.
     mounted: function () {
         this.initSse();
@@ -42,6 +43,7 @@ var app = new Vue({
         },
         // react on events: update the variables to be displayed
         updateVariables(ev) {
+            console.log(ev)
             // Event "buttonStateChanged"
             if (ev.eventName === "buttonStateChanged2") {
                 if (ev.eventData.message === "pressed") {
@@ -102,51 +104,38 @@ var app = new Vue({
                 }
 
             }
-
-          if (ev.eventName === "total") {
-                
-                    this.total = total;
-              
-                }  
-
-
-
-
-            
-            // Event "blinkingStateChanged"
-/*             else if (ev.eventName === "blinkingStateChanged") {
-                if (ev.eventData.message === "started blinking") {
-                    if (ev.deviceNumber === 0) {
-                        this.blinking_0 = true;
-                    }
-                    else if (ev.deviceNumber === 1) {
-                        this.blinking_1 = true;
-                    }
-                }
-                if (ev.eventData.message === "stopped blinking") {
-                    if (ev.deviceNumber === 0) {
-                        this.blinking_0 = false;
-                    }
-                    else if (ev.deviceNumber === 1) {
-                        this.blinking_1 = false;
-                    }
-                }
-            } */
         },
         // call the function "blinkRed" in your backend
-        blinkRed: function (nr) {
-            var duration = 2000; // blinking duration in milliseconds
-            axios.post(rootUrl + "/api/device/" + nr + "/function/blinkRed", { arg: duration })
+        setCounter: function (nr) {
+            var set = 0; // blinking duration in millisecond
+            axios.post(rootUrl + "/api/device/" + nr + "/function/setCounter", { arg: 0 })
                 .then(response => {
                     // Handle the response from the server
-                    console.log(response.data); // we could to something meaningful with the return value here ... 
+                    console.log(response.data); // we could to something meaningful with the return value here ...
+                    
+                    
+                })
+                .catch(error => {
+                    alert("Could not call the function 'blinkRed' of device number " + nr + ".\n\n" + error)
+                })
+        },
+
+
+        getMeldebestand: function (nr) {
+            var set = 0; // blinking duration in milliseconds
+
+            axios.get(rootUrl + "/api/device/" + nr + "/variable/meldebestand")
+                .then(response => {
+                    var meldebestand = response.data.result;
+                    
+                     this.meldebestand = meldebestand  // we could to something meaningful with the return value here ... 
                 })
                 .catch(error => {
                     alert("Could not call the function 'blinkRed' of device number " + nr + ".\n\n" + error)
                 })
         },
         // get the value of the variable "buttonState" on the device with number "nr" from your backend
-        getButtonState: function (nr) {
+       /*  getButtonState: function (nr) {
             axios.get(rootUrl + "/api/device/" + nr + "/variable/total")
                 .then(response => {
                     // Handle the response from the server
@@ -173,11 +162,11 @@ var app = new Vue({
 /*                     else {
                         console.log("unknown device number: " + nr);
                     } */
-                })
+ /*                  })
                 .catch(error => {
                     alert("Could not read the button state of device number " + nr + ".\n\n" + error)
                 })
-        },
+        }, */
 
         getTotal: function (nr) {
             axios.get(rootUrl + "/api/device/" + nr + "/variable/total")
@@ -186,6 +175,22 @@ var app = new Vue({
                     var total = response.data.result;
                     
                      this.total = total
+
+                
+                })
+                .catch(error => {
+                    alert("Could not read the button state of device number " + nr + ".\n\n" + error)
+                })
+        },
+
+
+        getCounter: function (nr) {
+            axios.get(rootUrl + "/api/device/" + nr + "/variable/counter")
+                .then(response => {
+                    // Handle the response from the server
+                    var counter = response.data.result;
+                    
+                     this.counter = counter / 1000
 
                 
                 })
