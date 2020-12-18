@@ -134,39 +134,6 @@ var app = new Vue({
                     alert("Could not call the function 'blinkRed' of device number " + nr + ".\n\n" + error)
                 })
         },
-        // get the value of the variable "buttonState" on the device with number "nr" from your backend
-       /*  getButtonState: function (nr) {
-            axios.get(rootUrl + "/api/device/" + nr + "/variable/total")
-                .then(response => {
-                    // Handle the response from the server
-                    var total = response.data.result;
-                    var bottleL;
-                    // this.buttonState2 = buttonState2;
-
-                    if (bottle2 == 1 ){
-
-                        this.bottle2 = 0;
-
-                    } else if ( bottle2 == 0){
-
-                        this.bottle2 = 1; 
-
-                     } else {
-                        console.log("unknown device number: " + nr);
-                    } 
-                   // if (nr === 0) {
-                    //}
-                    /* else if (nr === 1) {
-                        this.buttonState_1 = buttonState;
-                    } */
-/*                     else {
-                        console.log("unknown device number: " + nr);
-                    } */
- /*                  })
-                .catch(error => {
-                    alert("Could not read the button state of device number " + nr + ".\n\n" + error)
-                })
-        }, */
 
         getTotal: function (nr) {
             axios.get(rootUrl + "/api/device/" + nr + "/variable/total")

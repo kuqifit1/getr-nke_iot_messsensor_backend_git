@@ -4,8 +4,6 @@ var lastButtonPressEvent = {
     timestamp: 0
 }
 
-// remember how many times the buttons were pressed
-var buttonPressCounter = 0;
 
 
 
@@ -16,22 +14,12 @@ function handleChange2 (event) {
         let evDeviceId = ev.coreid; // the device id
         let evTimestamp = Date.parse(ev.published_at); // the timestamp of the event
     
-        // helper variables that we need to build the message to be sent to the clients
         let msg = "";
     
         if (evData === "pressed") {
 
             msg = "pressed";
     
-/*             // check if the last two button press events were whithin 1 second
-            if (evTimestamp - lastButtonPressEvent.timestamp < 1000) {
-                if (evDeviceId !== lastButtonPressEvent.deviceId) {
-                    sync = true;
-                }
-            }
-    
-            lastButtonPressEvent.timestamp = evTimestamp;
-            lastButtonPressEvent.deviceId = evDeviceId; */
         } 
         else if (evData === "released") {
             msg = "released";
